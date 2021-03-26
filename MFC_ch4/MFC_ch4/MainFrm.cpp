@@ -19,6 +19,7 @@ IMPLEMENT_DYNAMIC(CMainFrame, CFrameWnd)
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
+	ON_WM_NCPAINT()
 END_MESSAGE_MAP()
 
 // CMainFrame 생성/소멸
@@ -92,3 +93,27 @@ BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO*
 	return CFrameWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
+
+
+void CMainFrame::OnNcPaint()
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	// 그리기 메시지에 대해서는 CFrameWnd::OnNcPaint()을(를) 호출하지 마십시오.
+
+	//운영체제가 자동으로 비클라이언트 영역을 그리게 한다.
+	CFrameWnd::OnNcPaint();
+
+	//타이틀바에 직사각형을 그린다. 
+	CWindowDC dc(this);
+	int height = ::GetSystemMetrics(SM_CYSIZE) + GetSystemMetrics(SM_CYSIZEFRAME);
+	dc.Rectangle(150, 0, 350, height + 1);
+
+	//메인(프레임) 윈도우의 크기를 얻는다.
+	CRect rect;
+	GetWindowRect(&rect);
+
+	//타이틀바에 크기를 출력한다.
+	CString str;
+	str.Format(_T("Width=%4d, Height=%4d"), rect.Width(), rect.Height());
+	dc.TextOut(160, 7, str);
+}

@@ -25,7 +25,7 @@ CChildView::~CChildView()
 
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
-	ON_WM_LBUTTONDOWN()
+//	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -48,8 +48,7 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnPaint() 
 {
 	CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
-	dc.Rectangle(0, 0, 200, 100);
-	dc.Ellipse(200, 100, 500, 200);
+	
 	
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	
@@ -57,12 +56,3 @@ void CChildView::OnPaint()
 }
 
 
-
-void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	CClientDC dc(this);
-	dc.Rectangle(point.x - 20, point.y - 20, point.x + 20, point.y + 20);
-
-	CWnd::OnLButtonDown(nFlags, point);
-}
