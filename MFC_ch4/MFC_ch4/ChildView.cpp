@@ -40,7 +40,9 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
 	cs.style &= ~WS_BORDER;
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
-		::LoadCursor(nullptr, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), nullptr);
+		::LoadCursor(nullptr, IDC_ARROW), 
+		//reinterpret_cast<HBRUSH>(COLOR_WINDOW+1)
+		(HBRUSH)GetStockObject(GRAY_BRUSH), nullptr);
 
 	return TRUE;
 }
@@ -48,14 +50,18 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnPaint()
 {
 	CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
-	CRect rect;
-	GetClientRect(&rect);
-	dc.SetMapMode(MM_ANISOTROPIC);
-	dc.SetWindowExt(100, 100);
-	dc.SetViewportExt(rect.Width(), rect.Height());
-	dc.RoundRect(0, 0, 100, 100, 50, 50);
-	dc.DrawEdge(CRect(20, 20, 80, 80),
-		BDR_SUNKENINNER | BDR_RAISEDOUTER, BF_RECT);
+	dc.SetBkMode(OPAQUE); //이 줄을 주석 처리해도 결과는 같음
+	dc.TextOutW(100, 50, CString(" OPQUE 모드 [1] "));
+
+	dc.SetBkMode(TRANSPARENT);
+	dc.TextOutW(100, 100, CString(" TRANSPARETN 모드 "));
+
+	dc.SetBkMode(OPAQUE);
+	dc.SetBkColor(RGB(0, 255, 0)); //배경을 초록색으로 설정
+	dc.TextOut(100, 150, CString(" OPQUE 모드 [2]"));
+
+
 }
+
 
 
