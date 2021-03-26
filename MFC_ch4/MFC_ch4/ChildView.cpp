@@ -48,10 +48,14 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnPaint()
 {
 	CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
-	dc.SetMapMode(MM_LOMETRIC); //매핑 모드 변경
-	dc.Rectangle(0, 0, 1000, -300);
-	dc.SetMapMode(MM_HIMETRIC); //매핑 모드 변경
-	dc.Ellipse(0, 0, 10000, -3000);
+	CRect rect;
+	GetClientRect(&rect);
+	dc.SetMapMode(MM_ANISOTROPIC);
+	dc.SetWindowExt(100, 100);
+	dc.SetViewportExt(rect.Width(), rect.Height());
+	dc.RoundRect(0, 0, 100, 100, 50, 50);
+	dc.DrawEdge(CRect(20, 20, 80, 80),
+		BDR_SUNKENINNER | BDR_RAISEDOUTER, BF_RECT);
 }
 
 
