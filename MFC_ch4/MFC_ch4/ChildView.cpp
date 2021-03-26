@@ -53,16 +53,18 @@ void CChildView::OnPaint()
 	CRect rect;
 	GetClientRect(&rect);
 
-	//수평선과 수직선을 그린다.
-	dc.MoveTo(0, rect.bottom / 2);
-	dc.LineTo(rect.right, rect.bottom / 2);
-	dc.MoveTo(rect.right / 2, 0);
-	dc.LineTo(rect.right / 2, rect.bottom);
+	dc.SetTextColor(RGB(255, 0, 0));//글자를 빨간색으로 설정
+	dc.SetBkColor(RGB(255, 255, 0));//배경을 노란색으로 설정
+	dc.DrawText(CString("DrawText 함수를 연습합니다. [1]"), &rect, 0);
+	dc.DrawText(CString("DrawText 함수를 연습합니다. [2]"), &rect,
+		DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
-	//마름모꼴을 그린다.
-	POINT points[] = { {rect.right / 2,0},{rect.right,rect.bottom / 2},
-		{rect.right / 2,rect.bottom},{0,rect.bottom / 2},{rect.right / 2,0} };
-	dc.Polyline(points, 5);
+	dc.SetTextAlign(TA_CENTER); //가운데 정렬 방식으로 변경 
+	dc.SetTextColor(RGB(0, 0, 255)); //글자를 파란색으로 변경
+	dc.SetBkColor(RGB(0, 255, 0));//배경을 초록색으로 설정
+	dc.TextOutW(rect.right / 2, 3 * rect.bottom / 4,
+		CString("TextOut 함수를 연습합니다. "));
+	
 }
 
 
