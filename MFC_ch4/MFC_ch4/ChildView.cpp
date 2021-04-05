@@ -42,7 +42,7 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		::LoadCursor(nullptr, IDC_ARROW), 
 		//reinterpret_cast<HBRUSH>(COLOR_WINDOW+1)
-		(HBRUSH)GetStockObject(GRAY_BRUSH), nullptr);
+		(HBRUSH)GetStockObject(WHITE_BRUSH), nullptr);
 
 	return TRUE;
 }
@@ -50,17 +50,36 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnPaint()
 {
 	CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
-	dc.SetBkMode(OPAQUE); //이 줄을 주석 처리해도 결과는 같음
-	dc.TextOutW(100, 50, CString(" OPQUE 모드 [1] "));
+	
+	//다양한 펜 종류를 연습한다.
+	int nPenStyle[] = { PS_SOLID, PS_DASH,
+		PS_DOT, PS_DASHDOT, PS_DASHDOTDOT,
+		PS_NULL, PS_INSIDEFRAME };
+	TCHAR* PenStyle[] = { _T("PS_SOLID"), _T("PS_DASH"),
+		_T("PS_DOT"), _T("PS_DASHBOT"), _T("PS_DASHDOTDOT"),
+		_T("PS_NULL"), _T("PS_INSIDERFRAME") };
+	dc.SetTextAlign(TA_BASELINE);
+	for (int i = 0; i < sizeof(nPenStyle) / sizeof(nPenStyle[0]); i++) {
+		CPen pen(nPenStyle[i], 1,RGB(0,0,255));
+		dc.SelectObject(&pen);
+		dc.TextOut(50, 25 + i * 25, PenStyle[i], lstrlen(PenStyle[i]));
+		dc.MoveTo(200, 25 + i * 25);
+		dc.LineTo(500, 25 + i * 25);
+	}
 
-	dc.SetBkMode(TRANSPARENT);
-	dc.TextOutW(100, 100, CString(" TRANSPARETN 모드 "));
+	CPen blackpen(PS_SOLID, 1, RGB(0, 0, 0)); //폭 1, 검은색 PS_SOLID 펜
 
-	dc.SetBkMode(OPAQUE);
-	dc.SetBkColor(RGB(0, 255, 0)); //배경을 초록색으로 설정
-	dc.TextOut(100, 150, CString(" OPQUE 모드 [2]"));
+	dc.SelectObject(&blackpen);
+	dc.Rectangle(50, 200, 150, 300); //폭과 높이가 100인 직사각형
+	CPen pen1(PS_SOLID, 20, RGB(255, 0, 0)); //폭 20, 빨간색 PS_SOLID 펜
+	dc.SelectObject(&pen1);
+	dc.Ellipse(50, 200, 150, 300); //지름이 100인 원
 
-
+	dc.SelectObject(&blackpen);
+	dc.Rectangle(250, 200, 350, 300); //폭과 높이가 100인 직사각형
+	CPen pen2(PS_INSIDEFRAME, 20, RGB(255, 0, 0)); //폭20, 빨간색 PS_INSIDEFRAME 펜
+	dc.SelectObject(&pen2);
+	dc.Ellipse(250, 200, 350, 300); //지름이 100인 원
 }
 
 
